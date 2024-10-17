@@ -9,7 +9,7 @@ public class Rectangle {
 
     private int startLeft;
     private int startBottom;
-    private int height;
+    int height;
     private int width;
     private Canvas cv;
     private Chart chart;
@@ -39,9 +39,7 @@ public class Rectangle {
     }
 
     public void draw(Color color) {
-        GraphicsContext gc = cv.getGraphicsContext2D();
-        gc.setFill(color);
-        gc.fillRect(startLeft, startBottom-height, width, height);
+        drawRectangle(startLeft, startBottom, height, width, color);
     }
 
     private void drawRectangle(int startLeft, int startBottom, int height, int width) {
@@ -51,7 +49,7 @@ public class Rectangle {
     private void drawRectangle(int startLeft, int startBottom, int height, int width, Color color) {
         GraphicsContext gc = cv.getGraphicsContext2D();
         gc.setFill(color);
-        gc.fillRect(startLeft, startBottom-height, width, height);
+        gc.fillRect(startLeft+10, startBottom-height+5, width-15, height-10);
     }
 
     public void delete() {

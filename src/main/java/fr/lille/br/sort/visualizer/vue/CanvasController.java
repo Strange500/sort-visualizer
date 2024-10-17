@@ -1,5 +1,7 @@
 package fr.lille.br.sort.visualizer.vue;
 
+import fr.lille.br.sort.visualizer.sort.BubleSort;
+import fr.lille.br.sort.visualizer.sort.SelectionSort;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -46,16 +48,16 @@ public class CanvasController {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setStroke(Color.BLACK);
         gc.strokeRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
+        int[] tab = new int[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
         // draw rectangles
-        Chart chart = new Chart(10, 700, 500, 500, new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, canvas);
+        Chart chart = new Chart(10, 700, 500, 500, tab, canvas, new SelectionSort(tab));
         // another with different values
-        Chart chart2 = new Chart(520, 700, 500, 500, new int[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1}, canvas);
+        Chart chart2 = new Chart(520, 700, 500, 500, tab, canvas, new BubleSort(tab));
         chart.draw();
         chart2.draw();
         btn.setOnAction(e -> {
-            chart.betterCycle();
-            chart2.betterCycle();
+            chart.solve();
+            chart2.solve();
         });
     }
 
