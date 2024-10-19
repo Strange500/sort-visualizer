@@ -2,6 +2,8 @@ package fr.lille.br.sort.visualizer.vue;
 
 import javafx.scene.canvas.Canvas;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class ResizableCanvas extends Canvas {
 
     @Override
@@ -38,7 +40,17 @@ public class ResizableCanvas extends Canvas {
     public void resize(double width, double height) {
         super.setWidth(width);
         super.setHeight(height);
-        CanvasController.instance.draw();
+        try {
+            CanvasController.instance.draw();
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

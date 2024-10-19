@@ -1,5 +1,6 @@
 package fr.lille.br.sort.visualizer.sort;
 
+import fr.lille.br.sort.visualizer.vue.CanvasController;
 import fr.lille.br.sort.visualizer.vue.Chart;
 import javafx.util.Pair;
 
@@ -17,7 +18,6 @@ public class SelectionSort implements Sorter {
 
 
 
-
     public Pair<Integer, Integer> iteration() throws SortEnded {
         if (cpt >= array.length) {
             throw new SortEnded("Sort ended");
@@ -29,7 +29,6 @@ public class SelectionSort implements Sorter {
             }
         }
         swap(cpt, minIndex);
-        System.out.println("Algo : " + Arrays.toString(array));
         return new Pair<>(cpt++, minIndex);
     }
 
@@ -37,6 +36,15 @@ public class SelectionSort implements Sorter {
         int temp = array[minIndex];
         array[minIndex] = array[i];
         array[i] = temp;
+    }
+
+    public int[] nextArrayState() {
+        iteration();
+        return Arrays.copyOf(array, array.length);
+    }
+
+    public boolean entireArray() {
+        return false;
     }
 
 

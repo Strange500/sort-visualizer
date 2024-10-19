@@ -27,7 +27,10 @@
       </MenuBar>
    </top>
    <left>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="algoList" prefHeight="200.0" prefWidth="200.0" />
+         </children></HBox>
    </left>
    <center>
       <ResizableCanvas fx:id="canvas" height="380.0" width="400.0" BorderPane.alignment="CENTER" />

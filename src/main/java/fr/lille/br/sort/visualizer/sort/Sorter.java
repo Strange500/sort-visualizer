@@ -5,4 +5,9 @@ import javafx.util.Pair;
 public interface Sorter {
 
     public Pair<Integer, Integer> iteration() throws SortEnded;
+
+    public int[] nextArrayState();
+
+    public boolean entireArray();
+
 }

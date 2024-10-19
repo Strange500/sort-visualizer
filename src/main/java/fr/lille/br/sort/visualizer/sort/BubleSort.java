@@ -1,5 +1,6 @@
 package fr.lille.br.sort.visualizer.sort;
 
+import fr.lille.br.sort.visualizer.vue.CanvasController;
 import javafx.util.Pair;
 
 import java.util.Arrays;
@@ -38,6 +39,15 @@ public class BubleSort implements Sorter {
         }
          j++;
         return swapped ? new Pair<>(j - 1, j) : null;
+    }
+
+    public int[] nextArrayState() {
+        iteration();
+        return Arrays.copyOf(array, array.length);
+    }
+
+    public boolean entireArray() {
+        return false;
     }
 
 }

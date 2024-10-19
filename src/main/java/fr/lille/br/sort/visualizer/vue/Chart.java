@@ -88,7 +88,28 @@ public class Chart {
                 }
             }
         };
-        timer.start();
+        AnimationTimer timer2 = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                //pause(16);
+                try {
+                    int[] iteration = sorter.nextArrayState();
+                    //System.out.println(Arrays.toString(iteration));
+                    for (int i = 0; i < values.length; i++) {
+                        rectangles.get(i).delete();
+                        rectangles.get(i).height = iteration[i] * rectHeight;
+                        rectangles.get(i).draw();
+                    }
+                } catch (SortEnded sortEnded) {
+                    stop();
+                }
+            }
+        };
+        if (sorter.entireArray()) {
+            timer2.start();
+        }else {
+            timer.start();
+        }
 
     }
 
@@ -104,6 +125,10 @@ public class Chart {
         int temp = values[minIndex];
         values[minIndex] = values[i];
         values[i] = temp;
+    }
+
+    public void delete() {
+        new Rectangle(startLeft-10, startBottom, height+10, width+25, cv).delete();
     }
 
     private void swap(Rectangle r1, Rectangle r2) {
