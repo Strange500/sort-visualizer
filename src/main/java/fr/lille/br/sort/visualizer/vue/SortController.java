@@ -43,7 +43,7 @@ public class SortController {
     // gen a list of 100 elements
 
 
-    private int[] tab = genRandomArray(200);
+    private int[] tab = genRandomArray(1000);
 
     public static final Color idleRectColor = Color.BLACK;
     @FXML
