@@ -1,51 +1,34 @@
 package fr.lille.br.sort.visualizer.sort;
 
-import fr.lille.br.sort.visualizer.vue.CanvasController;
-import fr.lille.br.sort.visualizer.vue.Chart;
-import javafx.util.Pair;
+import javafx.scene.chart.BarChart;
 
-import java.util.Arrays;
+public class SelectionSort extends Sorter {
 
-public class SelectionSort implements Sorter {
+    int i = 0;
+    public SelectionSort(int[] array, BarChart<String, Number> bc) {
 
-    private final int[] array;
-
-    public int cpt = 0;
-
-    public SelectionSort(int[] array) {
-        this.array = Arrays.copyOf(array, array.length);
+        super(array, bc);
     }
 
 
 
-    public Pair<Integer, Integer> iteration() throws SortEnded {
-        if (cpt >= array.length) {
+    public void sort() throws SortEnded {
+        if (i >= array.length) {
             throw new SortEnded("Sort ended");
         }
-        int minIndex = cpt;
-        for (int i = cpt + 1; i < array.length; i++) {
-            if (array[i] < array[minIndex]) {
-                minIndex = i;
+        int min = i;
+        for (int j = i + 1; j < array.length; j++) {
+            if (array[j] < array[min]) {
+                min = j;
             }
         }
-        swap(cpt, minIndex);
-        return new Pair<>(cpt++, minIndex);
+        swap(i, min);
+        i++;
+
+
+
     }
 
-    private void swap(int i, int minIndex) {
-        int temp = array[minIndex];
-        array[minIndex] = array[i];
-        array[i] = temp;
-    }
-
-    public int[] nextArrayState() {
-        iteration();
-        return Arrays.copyOf(array, array.length);
-    }
-
-    public boolean entireArray() {
-        return false;
-    }
 
 
 }

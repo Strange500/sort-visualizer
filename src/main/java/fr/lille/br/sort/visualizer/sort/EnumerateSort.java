@@ -1,49 +1,34 @@
 package fr.lille.br.sort.visualizer.sort;
 
-import fr.lille.br.sort.visualizer.vue.CanvasController;
-import javafx.util.Pair;
+import javafx.scene.chart.BarChart;
 
 import java.util.*;
 
 
-public class EnumerateSort implements Sorter {
+public class EnumerateSort extends Sorter {
 
-    private int[] array;
     private final List<Integer> list;
 
-    public int i = 0;
 
 
-    public EnumerateSort(int[] array) {
-        this.array = array;
+    public EnumerateSort(int[] array, BarChart<String, Number> bc) {
+        super(array, bc);
         list = new ArrayList<>();
         for (int j : array) {
             list.add(j);
         }
+
     }
 
-    public Pair<Integer, Integer> iteration() throws SortEnded {
+    public void sort() throws SortEnded {
         if (isSorted()) {
             throw new SortEnded("Sort ended");
         }
         Collections.shuffle(list);
-        return null;
-    }
-
-    public int[] nextArrayState() throws SortEnded {
-        iteration();
-        int[] b = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            b[i] = list.get(i);
+        for (int i = 0; i < array.length; i++) {
+            array[i] = list.get(i);
         }
-        array = b;
-        return array;
-    }
 
-    private void swap(int i, int minIndex) {
-        int temp = array[minIndex];
-        array[minIndex] = array[i];
-        array[i] = temp;
     }
 
     private boolean isSorted() {
@@ -52,23 +37,6 @@ public class EnumerateSort implements Sorter {
                 return false;
             }
         }
-        return true;
-    }
-
-
-    // static sort trying all possible permutations
-    public static void sort(int[] array) {
-        EnumerateSort sorter = new EnumerateSort(array);
-        while (true) {
-            try {
-                sorter.iteration();
-            } catch (SortEnded e) {
-                break;
-            }
-        }
-    }
-
-    public boolean entireArray() {
         return true;
     }
 

@@ -12,7 +12,7 @@ import static java.lang.System.exit;
 
 public class App extends Application {
 
-    private static final String FXML = "App.fxml";
+    private static final String FXML = "Bis.fxml";
 
     public static void main(String[] args) {
         launch(args);
