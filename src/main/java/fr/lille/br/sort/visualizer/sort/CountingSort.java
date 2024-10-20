@@ -4,35 +4,34 @@ import javafx.scene.chart.BarChart;
 
 public class CountingSort extends Sorter{
 
-    private int[] count ;
 
-    private int index = 0;
-
-    private int i = 0;
-
-    private int j = 0;
 
 
     public CountingSort(int[] array, BarChart<String, Number> bc) {
         super(array, bc);
-        count = new int[array.length];
-        for (int j : array) {
-            count[j]++;
-        }
     }
 
     public void sort() throws SortEnded {
-        if (i >= count.length || index >= array.length) {
-            throw new SortEnded("Sort ended");
+        int max = array.get(0);
+        for (int i = 1; i < array.size(); i++) {
+            if (array.get(i) > max) {
+                max = array.get(i);
+            }
         }
-        if (j >= count[i]) {
-            i++;
-            j = 0;
+        int[] count = new int[max + 1];
+        for (int i = 0; i < array.size(); i++) {
+            count[array.get(i)]++;
         }
-
-        array[index] = i;
-        index++;
-        j++;
+        int j = 0;
+        for (int i = 0; i < count.length; i++) {
+            while (count[i] > 0) {
+                array.set(j, i);
+                j++;
+                count[i]--;
+                pause();
+            }
+        }
+        throw new SortEnded("Sort ended");
 
     }
 }

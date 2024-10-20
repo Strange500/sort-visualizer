@@ -3,8 +3,7 @@ package fr.lille.br.sort.visualizer.sort;
 import javafx.scene.chart.BarChart;
 
 public class BubleSort extends Sorter {
-    int i = 0;
-    int j = 0;
+
 
     public BubleSort(int[] array, BarChart<String, Number> bc) {
         super(array, bc);
@@ -12,17 +11,15 @@ public class BubleSort extends Sorter {
 
 
      public void sort() throws SortEnded {
-            if (i >= array.length) {
-                throw new SortEnded("Sort ended");
+            for (int i = 0; i < array.size(); i++) {
+                for (int j = 0; j < array.size() - 1; j++) {
+                    if (array.get(j) > array.get(j + 1)) {
+                        swap(j, j + 1);
+                    }
+                    pause();
+                }
             }
-            if (j >= array.length - i - 1) {
-                i++;
-                j = 0;
-            }
-             if (array[j] > array[j + 1]) {
-                 swap(j, j + 1);
-             }
-                j++;
+            throw new SortEnded("Sort ended");
 
 
 

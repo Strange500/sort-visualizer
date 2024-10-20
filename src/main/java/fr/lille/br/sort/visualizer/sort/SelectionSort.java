@@ -4,7 +4,6 @@ import javafx.scene.chart.BarChart;
 
 public class SelectionSort extends Sorter {
 
-    int i = 0;
     public SelectionSort(int[] array, BarChart<String, Number> bc) {
 
         super(array, bc);
@@ -13,17 +12,18 @@ public class SelectionSort extends Sorter {
 
 
     public void sort() throws SortEnded {
-        if (i >= array.length) {
-            throw new SortEnded("Sort ended");
-        }
-        int min = i;
-        for (int j = i + 1; j < array.length; j++) {
-            if (array[j] < array[min]) {
-                min = j;
+
+        for (int i = 0; i < array.size(); i++) {
+            int min = i;
+            for (int j = i + 1; j < array.size(); j++) {
+                if (array.get(j) < array.get(min)) {
+                    min = j;
+                }
+                pause();
             }
+            swap(i, min);
         }
-        swap(i, min);
-        i++;
+        throw new SortEnded("Sort ended");
 
 
 

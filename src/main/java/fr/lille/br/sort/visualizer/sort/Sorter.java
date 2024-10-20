@@ -1,16 +1,19 @@
 package fr.lille.br.sort.visualizer.sort;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class Sorter extends AnimationTimer {
+    public static List<Thread> threads = new java.util.ArrayList<>();
     private static int ms = 16;
-    protected int[] array;
+    protected ChartArray array;
     public final BarChart<String, Number> bc;
-    int nbIteration = 0;
     long start = 0;
     private XYChart.Series<String, Number> series = new XYChart.Series<>();
 
@@ -18,28 +21,18 @@ public abstract class Sorter extends AnimationTimer {
     public abstract void sort() throws SortEnded;
 
     public Sorter(int[] array, BarChart<String, Number> bc)  {
-        this.array = Arrays.copyOf(array, array.length);
+        this.array = new ChartArray(Arrays.copyOf(array, array.length), bc);
         this.bc = bc;
-    }
-
-    protected void updateChart() {
-        bc.getData().clear();
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        for (int i = 0; i < array.length; i++) {
-            series.getData().add(new XYChart.Data<>(String.valueOf(i), array[i]));
-        }
-        bc.getData().add(series);
-
-
+        updateChart(0);
     }
 
     protected void swap(int i, int minIndex) {
-        int temp = array[minIndex];
-        array[minIndex] = array[i];
-        array[i] = temp;
+        int temp = array.get(i);
+        array.set(i, array.get(minIndex));
+        array.set(minIndex, temp);
     }
 
-    private static void pause() {
+    static void pause() {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
@@ -53,26 +46,42 @@ public abstract class Sorter extends AnimationTimer {
         }
         Sorter.ms = ms;
     }
+
+    public void ended() {
+        updateChart(System.nanoTime());
+    }
     public void startTimer() {
         start = System.nanoTime();
-        this.start();
+        // javafx run sort in background
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    start();
+                    sort();
+                } catch (SortEnded sortEnded) {
+                    stop();
+                }
+                return null;
+            }
+        };
+        task.setOnSucceeded(event -> {
+            ended();
+        });
+        Thread thread = new Thread(task);
+        threads.add(thread);
+        thread.start();
 
     }
+
+
+
     public void handle(long now) {
+        updateChart(now);
+    }
 
-        try {
-            sort();
-            updateChart();
-            nbIteration++;
-            bc.getXAxis().setLabel("Iteration: " + nbIteration + "\nTime: " + getTime(now));
-            pause();
-
-
-        } catch (SortEnded sortEnded) {
-            stop();
-        }
-
-
+    private void updateChart(long now) {
+        bc.getXAxis().setLabel("Time: " + getTime(now) + " \nemory Access: " + array.getAccess() + "\nMemory Modification: " + array.getModification());
     }
 
     private String getTime(long now) {
@@ -88,3 +97,4 @@ public abstract class Sorter extends AnimationTimer {
 
 
 }
+

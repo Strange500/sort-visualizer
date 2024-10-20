@@ -21,19 +21,20 @@ public class EnumerateSort extends Sorter {
     }
 
     public void sort() throws SortEnded {
-        if (isSorted()) {
-            throw new SortEnded("Sort ended");
+        while (!isSorted()) {
+            Collections.shuffle(list);
+            for (int i = 0; i < list.size(); i++) {
+                array.set(i, list.get(i));
+                pause();
+            }
         }
-        Collections.shuffle(list);
-        for (int i = 0; i < array.length; i++) {
-            array[i] = list.get(i);
-        }
+        throw new SortEnded("Sort ended");
 
     }
 
     private boolean isSorted() {
-        for (int i = 0; i < array.length - 1; i++) {
-            if (array[i] > array[i + 1]) {
+        for (int i = 0; i < array.size() - 1; i++) {
+            if (array.get(i) > array.get(i + 1)) {
                 return false;
             }
         }

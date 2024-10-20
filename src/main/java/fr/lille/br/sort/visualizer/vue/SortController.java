@@ -1,5 +1,6 @@
 package fr.lille.br.sort.visualizer.vue;
 
+import atlantafx.base.theme.Theme;
 import fr.lille.br.sort.visualizer.sort.Sorter;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -42,7 +43,7 @@ public class SortController {
     // gen a list of 100 elements
 
 
-    private int[] tab = genRandomArray(1000);
+    private int[] tab = genRandomArray(200);
 
     public static final Color idleRectColor = Color.BLACK;
     @FXML
@@ -125,11 +126,7 @@ public class SortController {
         bc.setAnimated(false);
         bc.autosize();
         // add values
-        for (int i = 0; i < tab.length; i++) {
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            series.getData().add(new XYChart.Data<>(String.valueOf(i), tab[i]));
-            bc.getData().add(series);
-        }
+
         if (column >= maxPerRow) {
             column = 0;
             row++;
@@ -172,6 +169,9 @@ public class SortController {
     public void reset() {
         for (Sorter chart : charts) {
             chart.stop();
+        }
+        for (Thread thread : Sorter.threads) {
+            thread.interrupt();
         }
         charts.clear();
         grid.getChildren().clear();
