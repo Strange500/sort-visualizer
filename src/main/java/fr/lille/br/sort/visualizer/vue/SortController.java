@@ -4,28 +4,53 @@ import atlantafx.base.theme.Theme;
 import fr.lille.br.sort.visualizer.sort.Sorter;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import org.reflections.Reflections;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 
 public class SortController {
 
+    private static int arraySize = 100;
+    private static int msDelay = 10;
+
     public static final Map<String, Class<? extends Sorter>> AlgoMap = new HashMap<>();
 
     private int column = 0;
     private int row = 0;
-
     private int maxPerRow = 2;
+
+    public static void setArraySize(int size) {
+        if (size < 0) {
+            throw new IllegalArgumentException("Array size must be positive");
+        }
+        arraySize = size;
+    }
+
+    public static void setMsDelay(int ms) {
+        if (ms < 0) {
+            throw new IllegalArgumentException("Delay must be positive");
+        }
+        msDelay = ms;
+    }
+
+    public static int getArraySize() {
+        return arraySize;
+    }
+
+    public static int getMsDelay() {
+        return msDelay;
+    }
 
     @FXML
     Button btn;
@@ -43,14 +68,13 @@ public class SortController {
     // gen a list of 100 elements
 
 
-    private int[] tab = genRandomArray(1000);
+    private int[] tab = genRandomArray(SortController.arraySize);
 
     public static final Color idleRectColor = Color.BLACK;
+
     @FXML
     private void initialize()  {
         instance = this;
-        Sorter.setMs(0);
-
         loadClasses();
         // style grid
         grid.setHgap(10);
@@ -73,7 +97,6 @@ public class SortController {
 
             for (String s : c.getList()) {
                 addChart(s, tab);
-
             }
             try {
                 draw();
@@ -87,6 +110,19 @@ public class SortController {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public void reloadChart() {
+        tab = genRandomArray(SortController.arraySize);
+        List<String> selectedItems = new ArrayList<>();
+        List<Sorter> tmp = new ArrayList<>(this.charts);
+        reset();
+        for (Sorter c : tmp) {
+            String name = c.getClass().getSimpleName();
+            selectedItems.add(name);
+            addChart(name, tab);
+        }
+
     }
 
     private void loadClasses() {
@@ -186,6 +222,18 @@ public class SortController {
             tab[i] = (int) (Math.random() * 100);
         }
         return tab;
+    }
+
+    public void openSettings() {
+        Stage stage = new Stage();
+        stage.setTitle("Settings");
+        try {
+            FXMLLoader loader = new FXMLLoader(SettingController.class.getResource("setting.fxml"));
+            stage.setScene(new Scene(loader.load()));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        stage.show();
     }
 
 

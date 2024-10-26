@@ -1,5 +1,6 @@
 package fr.lille.br.sort.visualizer.sort;
 
+import fr.lille.br.sort.visualizer.vue.SortController;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public abstract class Sorter extends AnimationTimer {
     public static List<Thread> threads = new java.util.ArrayList<>();
-    private static int ms = 16;
+    private static int ms = SortController.getMsDelay();
     protected ChartArray array;
     public final BarChart<String, Number> bc;
     long start = 0;
@@ -38,6 +39,10 @@ public abstract class Sorter extends AnimationTimer {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public BarChart<String, Number> getBc() {
+        return bc;
     }
 
     public static void setMs(int ms) {
