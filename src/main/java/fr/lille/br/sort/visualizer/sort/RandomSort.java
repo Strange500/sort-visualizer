@@ -5,13 +5,13 @@ import javafx.scene.chart.BarChart;
 import java.util.*;
 
 
-public class EnumerateSort extends Sorter {
+public class RandomSort extends Sorter {
 
     private final List<Integer> list;
 
 
 
-    public EnumerateSort(int[] array, BarChart<String, Number> bc) {
+    public RandomSort(int[] array, BarChart<String, Number> bc) {
         super(array, bc);
         list = new ArrayList<>();
         for (int j : array) {
