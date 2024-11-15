@@ -86,7 +86,7 @@ public abstract class Sorter extends AnimationTimer {
     }
 
     private void updateChart(long now) {
-        bc.getXAxis().setLabel("Time: " + getTime(now) + " \nemory Access: " + array.getAccess() + "\nMemory Modification: " + array.getModification());
+        bc.getXAxis().setLabel("Time: " + getTime(now) + " \nmemory Access: " + array.getAccess() + "\nMemory Modification: " + array.getModification());
     }
 
     private String getTime(long now) {

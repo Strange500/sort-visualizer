@@ -65,7 +65,6 @@ public class SortController {
 
     private List<Sorter> charts = new ArrayList<>();
 
-    // gen a list of 100 elements
 
 
     private int[] tab = genRandomArray(SortController.arraySize);
@@ -167,7 +166,6 @@ public class SortController {
             column = 0;
             row++;
         }
-        System.out.println("row = " + row + " column = " + column);
         grid.add(bc, column, row);
         column++;
         try {
